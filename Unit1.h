@@ -15,6 +15,18 @@ class TForm1 : public TForm
 __published:	// IDE-managed Components
         TImage *statek;
         TImage *Image1;
+        TTimer *Lewo;
+        TTimer *Prawo;
+        TTimer *statek_ruch1;
+        TTimer *statek_ruch2;
+        TTimer *statek_ruch3;
+        void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+        void __fastcall FormKeyUp(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+        void __fastcall LewoTimer(TObject *Sender);
+        void __fastcall PrawoTimer(TObject *Sender);
+        void __fastcall statek_ruch1Timer(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);

@@ -1,1 +1,2 @@
-Statek co sobie niszczy
+# Galaxy
+**Statek co sobie niszczy**

@@ -1,0 +1,1 @@
+Statek co sobie niszczy

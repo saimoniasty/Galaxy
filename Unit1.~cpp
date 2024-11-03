@@ -17,6 +17,14 @@ TForm1 *Form1;
 __fastcall TForm1::TForm1(TComponent* Owner)
         : TForm(Owner)
 {
+   tytul->Top=900; tytul->Left=152;
+   tytul_wjazd->Enabled = true;
+
+}
+//---------------------------------------------------------------------------
+__fastcall TForm1::~TForm1()
+{
+
 }
 //---------------------------------------------------------------------------
 
@@ -78,9 +86,37 @@ void __fastcall TForm1::startClick(TObject *Sender)
 {
    gra_rozpoczeta=true;
    tytul->Visible=false;
-   start->Visible=false; high_score->Visible=false; dadada->Visible=false;
-   tlo->Visible=true; tlo_tytul->Visible=false;
+   start->Visible=false; high_score->Visible=false; label_high_score->Visible=false;
+   tlo_tytul->Visible=false;
+
+   tlo->Visible=true;
+   score->Visible=true;
    statek->Visible=true;
+   zycie1->Visible=true; zycie2->Visible=true; zycie3->Visible=true;
 }
 //---------------------------------------------------------------------------
+
+
+
+void __fastcall TForm1::tytul_wjazdTimer(TObject *Sender)
+{
+   if(tytul->Top >= 78) tytul->Top-=15;
+   else if(tytul->Top <= 78) {
+     high_score->Visible=true; label_high_score->Visible=true;
+     tytul_wyjazd_czekaj->Enabled=true;
+     tytul_wjazd->Enabled=false;
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::tytul_wyjazd_czekajTimer(TObject *Sender)
+{
+   start->Visible=true;
+   tytul_wyjazd_czekaj->Enabled=false;
+}
+//---------------------------------------------------------------------------
+
+
+
+
 

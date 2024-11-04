@@ -44,6 +44,7 @@ __published:	// IDE-managed Components
         TTimer *lvl1;
         TImage *lvl1_niebieski11;
         TImage *lvl1_niebieski12;
+        TTimer *latanie_wrogow;
         void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
         void __fastcall FormKeyUp(TObject *Sender, WORD &Key,
@@ -55,6 +56,7 @@ __published:	// IDE-managed Components
         void __fastcall tytul_wjazdTimer(TObject *Sender);
         void __fastcall tytul_wyjazd_czekajTimer(TObject *Sender);
         void __fastcall lvl1Timer(TObject *Sender);
+        void __fastcall latanie_wrogowTimer(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);

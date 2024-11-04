@@ -10,8 +10,9 @@
 #pragma resource "*.dfm"
 TForm1 *Form1;
 
-  int ktory=1;
+  int ktory_statek=1;
   bool gra_rozpoczeta=false;
+  bool ktory_wrog=true;
 
 //---------------------------------------------------------------------------
 __fastcall TForm1::TForm1(TComponent* Owner)
@@ -66,17 +67,17 @@ void __fastcall TForm1::PrawoTimer(TObject *Sender)
 
 void __fastcall TForm1::statek_animacjaTimer(TObject *Sender)
 {
-   switch(ktory){
+   switch(ktory_statek){
     case 1:
-    statek->Picture->LoadFromFile("img/statek1.bmp"); ktory=2;
+    statek->Picture->LoadFromFile("img/statek1.bmp"); ktory_statek=2;
     break;
 
     case 2:
-    statek->Picture->LoadFromFile("img/statek2.bmp"); ktory=3;
+    statek->Picture->LoadFromFile("img/statek2.bmp"); ktory_statek=3;
     break;
 
     case 3:
-    statek->Picture->LoadFromFile("img/statek3.bmp"); ktory=1;
+    statek->Picture->LoadFromFile("img/statek3.bmp"); ktory_statek=1;
     break;
    }
 }
@@ -92,6 +93,8 @@ void __fastcall TForm1::startClick(TObject *Sender)
    tlo->Visible=true;
    score->Visible=true;
    statek->Visible=true;
+   statek_animacja->Enabled=true;
+   latanie_wrogow->Enabled=true;
    zycie1->Visible=true; zycie2->Visible=true; zycie3->Visible=true;
 
    //pojawianie sie niebieskich wrogow
@@ -155,6 +158,41 @@ void __fastcall TForm1::lvl1Timer(TObject *Sender)
      lvl1_niebieski11->Top+=15;
      lvl1_niebieski12->Top+=15;
    } else if(lvl1_niebieski1->Top >= 150) lvl1->Enabled=false;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::latanie_wrogowTimer(TObject *Sender)
+{
+   if(ktory_wrog){
+     lvl1_niebieski1->Picture->LoadFromFile("img/niebieski2.bmp");
+     lvl1_niebieski2->Picture->LoadFromFile("img/niebieski2.bmp");
+     lvl1_niebieski3->Picture->LoadFromFile("img/niebieski2.bmp");
+     lvl1_niebieski4->Picture->LoadFromFile("img/niebieski2.bmp");
+     lvl1_niebieski5->Picture->LoadFromFile("img/niebieski2.bmp");
+     lvl1_niebieski6->Picture->LoadFromFile("img/niebieski2.bmp");
+     lvl1_niebieski7->Picture->LoadFromFile("img/niebieski2.bmp");
+     lvl1_niebieski8->Picture->LoadFromFile("img/niebieski2.bmp");
+     lvl1_niebieski9->Picture->LoadFromFile("img/niebieski2.bmp");
+     lvl1_niebieski10->Picture->LoadFromFile("img/niebieski2.bmp");
+     lvl1_niebieski11->Picture->LoadFromFile("img/niebieski2.bmp");
+     lvl1_niebieski12->Picture->LoadFromFile("img/niebieski2.bmp");
+     ktory_wrog=false;
+   } else{
+     lvl1_niebieski1->Picture->LoadFromFile("img/niebieski1.bmp");
+     lvl1_niebieski2->Picture->LoadFromFile("img/niebieski1.bmp");
+     lvl1_niebieski3->Picture->LoadFromFile("img/niebieski1.bmp");
+     lvl1_niebieski4->Picture->LoadFromFile("img/niebieski1.bmp");
+     lvl1_niebieski5->Picture->LoadFromFile("img/niebieski1.bmp");
+     lvl1_niebieski6->Picture->LoadFromFile("img/niebieski1.bmp");
+     lvl1_niebieski7->Picture->LoadFromFile("img/niebieski1.bmp");
+     lvl1_niebieski8->Picture->LoadFromFile("img/niebieski1.bmp");
+     lvl1_niebieski9->Picture->LoadFromFile("img/niebieski1.bmp");
+     lvl1_niebieski10->Picture->LoadFromFile("img/niebieski1.bmp");
+     lvl1_niebieski11->Picture->LoadFromFile("img/niebieski1.bmp");
+     lvl1_niebieski12->Picture->LoadFromFile("img/niebieski1.bmp");
+     ktory_wrog=true;
+   }
 }
 //---------------------------------------------------------------------------
 

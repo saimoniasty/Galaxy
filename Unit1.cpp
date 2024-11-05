@@ -54,14 +54,14 @@ void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
 
 void __fastcall TForm1::LewoTimer(TObject *Sender)
 {
-   if(statek->Left > -10) statek->Left-=10;
+   if(statek->Left > -10) statek->Left-=20;
 }
 //---------------------------------------------------------------------------
 
 
 void __fastcall TForm1::PrawoTimer(TObject *Sender)
 {
-   if(statek->Left+statek->Width < Form1->Width-10) statek->Left+=10;     
+   if(statek->Left+statek->Width < Form1->Width-10) statek->Left+=20;     
 }
 //---------------------------------------------------------------------------
 
@@ -94,7 +94,7 @@ void __fastcall TForm1::startClick(TObject *Sender)
    score->Visible=true;
    statek->Visible=true;
    statek_animacja->Enabled=true;
-   latanie_wrogow->Enabled=true;
+   //latanie_wrogow->Enabled=true;
    zycie1->Visible=true; zycie2->Visible=true; zycie3->Visible=true;
 
    //pojawianie sie niebieskich wrogow

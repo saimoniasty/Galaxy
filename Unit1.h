@@ -19,7 +19,7 @@ __published:	// IDE-managed Components
         TTimer *Lewo;
         TTimer *Prawo;
         TTimer *statek_animacja;
-        TImage *strzal;
+        TImage *strzal1;
         TImage *tytul;
         TImage *tlo_tytul;
         TImage *start;
@@ -45,6 +45,17 @@ __published:	// IDE-managed Components
         TImage *lvl1_niebieski11;
         TImage *lvl1_niebieski12;
         TTimer *latanie_wrogow;
+        TImage *strzal2;
+        TImage *strzal3;
+        TImage *strzal4;
+        TImage *strzal5;
+        TImage *strzal6;
+        TTimer *strzal1_lot;
+        TTimer *strzal2_lot;
+        TTimer *strzal3_lot;
+        TTimer *strzal4_lot;
+        TTimer *strzal5_lot;
+        TTimer *strzal6_lot;
         void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
         void __fastcall FormKeyUp(TObject *Sender, WORD &Key,
@@ -57,10 +68,18 @@ __published:	// IDE-managed Components
         void __fastcall tytul_wyjazd_czekajTimer(TObject *Sender);
         void __fastcall lvl1Timer(TObject *Sender);
         void __fastcall latanie_wrogowTimer(TObject *Sender);
+        void __fastcall strzal1_lotTimer(TObject *Sender);
+        void __fastcall strzal2_lotTimer(TObject *Sender);
+        void __fastcall strzal3_lotTimer(TObject *Sender);
+        void __fastcall strzal4_lotTimer(TObject *Sender);
+        void __fastcall strzal5_lotTimer(TObject *Sender);
+        void __fastcall strzal6_lotTimer(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);
         __fastcall ~TForm1();
+        int ktory_statek, ktory_strzal;
+        bool gra_rozpoczeta, ktory_wrog;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;

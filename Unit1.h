@@ -10,6 +10,7 @@
 #include <ExtCtrls.hpp>
 #include <Graphics.hpp>
 #include <MPlayer.hpp>
+#include <vector>
 //---------------------------------------------------------------------------
 class TForm1 : public TForm
 {
@@ -31,19 +32,8 @@ __published:	// IDE-managed Components
         TImage *zycie1;
         TImage *zycie2;
         TImage *zycie3;
-        TImage *lvl1_niebieski1;
-        TImage *lvl1_niebieski2;
-        TImage *lvl1_niebieski3;
-        TImage *lvl1_niebieski4;
-        TImage *lvl1_niebieski5;
-        TImage *lvl1_niebieski6;
-        TImage *lvl1_niebieski7;
-        TImage *lvl1_niebieski8;
-        TImage *lvl1_niebieski9;
-        TImage *lvl1_niebieski10;
+        TImage *lvl1_niebieski_template;
         TTimer *lvl1;
-        TImage *lvl1_niebieski11;
-        TImage *lvl1_niebieski12;
         TTimer *latanie_wrogow;
         TImage *strzal2;
         TImage *strzal3;
@@ -56,6 +46,7 @@ __published:	// IDE-managed Components
         TTimer *strzal4_lot;
         TTimer *strzal5_lot;
         TTimer *strzal6_lot;
+        TTimer *przeladowanie;
         void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
         void __fastcall FormKeyUp(TObject *Sender, WORD &Key,
@@ -74,12 +65,21 @@ __published:	// IDE-managed Components
         void __fastcall strzal4_lotTimer(TObject *Sender);
         void __fastcall strzal5_lotTimer(TObject *Sender);
         void __fastcall strzal6_lotTimer(TObject *Sender);
-private:	// User declarations
+        void __fastcall przeladowanieTimer(TObject *Sender);
+        void __fastcall FormResize(TObject *Sender);
+private:
+        //wrogowie niebiescy lvl1
+        std::vector<TImage*> lvl1wrogowie_niebiescy;
+        //pozycje do resizowania labeli
+        int initialFontSize_high, initialFontSize_score;
+        int initialLeft_high, initialLeft_score;
+        int initialTop_high, initialTop_score;
+        //pomocnicze
+        int ktory_statek, ktory_strzal;
+        bool gra_rozpoczeta, ktory_wrog;	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);
         __fastcall ~TForm1();
-        int ktory_statek, ktory_strzal;
-        bool gra_rozpoczeta, ktory_wrog;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TForm1 *Form1;

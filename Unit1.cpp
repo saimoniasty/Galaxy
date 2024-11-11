@@ -10,6 +10,25 @@
 #pragma resource "*.dfm"
 TForm1 *Form1;
 
+bool hit(TImage *s,TImage *w){
+   if(s->Top-2 <= w->Top+w->Height-28 && (s->Left+2 >= w->Left+20 && s->Left+2+s->Width-2 <= w->Left+20+w->Width-20) && w->Visible) return true;
+   else return false;
+}
+void sprawdza_hit(TImage *st,TTimer *lot,TImage *w){
+   if(hit(st,w)){
+     st->Visible=false; w->Visible=false;
+     lot->Enabled=false;
+   }
+}
+
+void skalowanie_obraz(TImage *obraz){
+   if(obraz->Picture->Graphic != NULL){
+     obraz->Width=Form1->ClientWidth;
+     obraz->Height=Form1->ClientHeight;
+     obraz->Stretch=true;
+   }
+}
+
 //---------------------------------------------------------------------------
 __fastcall TForm1::TForm1(TComponent* Owner)
         : TForm(Owner)
@@ -17,6 +36,21 @@ __fastcall TForm1::TForm1(TComponent* Owner)
    tytul->Top=900; tytul->Left=152;
    ktory_statek=1; ktory_wrog=true; gra_rozpoczeta=false;
    tytul_wjazd->Enabled = true;
+
+   initialFontSize_high = label_high_score->Font->Size;
+   initialLeft_high = label_high_score->Left;
+   initialTop_high = label_high_score->Top;
+
+   initialFontSize_score = score->Font->Size;
+   initialLeft_score = score->Left;
+   initialTop_score = score->Top;
+
+   for(int i = 0; i<12; i++) {
+        TImage *wrog = new TImage(this);
+        wrog->Parent = this;
+        wrog->Visible = false; // Ustawienie pocz¹tkowej widocznoœci
+        lvl1wrogowie_niebiescy.push_back(wrog); // Dodanie elementu do wektora
+   }
 }
 //---------------------------------------------------------------------------
 __fastcall TForm1::~TForm1()
@@ -37,44 +71,45 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
        if(ktory_strzal==1){
          sndPlaySound("snd/strzal.wav",SND_ASYNC);
          ktory_strzal++;
-         strzal1->Top = statek->Top+28; strzal1->Left = statek->Left+17;
+         strzal1->Top = statek->Top+28; strzal1->Left = statek->Left+35;
          strzal1->Visible=true;
          strzal1_lot->Enabled=true;
        }
        else if(ktory_strzal==2){
          sndPlaySound("snd/strzal.wav",SND_ASYNC);
          ktory_strzal++;
-         strzal2->Top = statek->Top+28; strzal2->Left = statek->Left+53;
+         strzal2->Top = statek->Top+28; strzal2->Left = statek->Left+35;
          strzal2->Visible=true;
          strzal2_lot->Enabled=true;
        }
        else if(ktory_strzal==3){
          sndPlaySound("snd/strzal.wav",SND_ASYNC);
          ktory_strzal++;
-         strzal3->Top = statek->Top+28; strzal3->Left = statek->Left+17;
+         strzal3->Top = statek->Top+28; strzal3->Left = statek->Left+35;
          strzal3->Visible=true;
          strzal3_lot->Enabled=true;
        }
        else if(ktory_strzal==4){
          sndPlaySound("snd/strzal.wav",SND_ASYNC);
          ktory_strzal++;
-         strzal4->Top = statek->Top+28; strzal4->Left = statek->Left+53;
+         strzal4->Top = statek->Top+28; strzal4->Left = statek->Left+35;
          strzal4->Visible=true;
          strzal4_lot->Enabled=true;
        }
        else if(ktory_strzal==5){
          sndPlaySound("snd/strzal.wav",SND_ASYNC);
          ktory_strzal++;
-         strzal5->Top = statek->Top+28; strzal5->Left = statek->Left+17;
+         strzal5->Top = statek->Top+28; strzal5->Left = statek->Left+35;
          strzal5->Visible=true;
          strzal5_lot->Enabled=true;
        }
        else if(ktory_strzal==6){
          sndPlaySound("snd/strzal.wav",SND_ASYNC);
          ktory_strzal++;
-         strzal6->Top = statek->Top+28; strzal6->Left = statek->Left+53;
+         strzal6->Top = statek->Top+28; strzal6->Left = statek->Left+35;
          strzal6->Visible=true;
          strzal6_lot->Enabled=true;
+         przeladowanie->Enabled=true;
        }
      }
    }
@@ -136,25 +171,15 @@ void __fastcall TForm1::startClick(TObject *Sender)
    ktory_strzal=1;
    zycie1->Visible=true; zycie2->Visible=true; zycie3->Visible=true;
 
-   //pojawianie sie niebieskich wrogow
-   //1-2
-   lvl1_niebieski1->Visible=true; lvl1_niebieski1->Left=55; lvl1_niebieski1->Top=-100;
-   lvl1_niebieski2->Visible=true; lvl1_niebieski2->Left=115; lvl1_niebieski2->Top=-100;
-   //3-4
-   lvl1_niebieski3->Visible=true; lvl1_niebieski3->Left=175; lvl1_niebieski3->Top=-100;
-   lvl1_niebieski4->Visible=true; lvl1_niebieski4->Left=235; lvl1_niebieski4->Top=-100;
-   //5-6
-   lvl1_niebieski5->Visible=true; lvl1_niebieski5->Left=295; lvl1_niebieski5->Top=-100;
-   lvl1_niebieski6->Visible=true; lvl1_niebieski6->Left=355; lvl1_niebieski6->Top=-100;
-   //7-8
-   lvl1_niebieski7->Visible=true; lvl1_niebieski7->Left=415; lvl1_niebieski7->Top=-100;
-   lvl1_niebieski8->Visible=true; lvl1_niebieski8->Left=475; lvl1_niebieski8->Top=-100;
-   //9-10
-   lvl1_niebieski9->Visible=true; lvl1_niebieski9->Left=535; lvl1_niebieski9->Top=-100;
-   lvl1_niebieski10->Visible=true; lvl1_niebieski10->Left=595; lvl1_niebieski10->Top=-100;
-   //11-12
-   lvl1_niebieski11->Visible=true; lvl1_niebieski11->Left=655; lvl1_niebieski11->Top=-100;
-   lvl1_niebieski12->Visible=true; lvl1_niebieski12->Left=715; lvl1_niebieski12->Top=-100;
+   //pojawianie sie niebieskich wrogow w lvl1
+   int startX = 55;
+   for (int i = 0; i < 12; i++){
+       lvl1wrogowie_niebiescy[i]->Picture = lvl1_niebieski_template->Picture;
+       lvl1wrogowie_niebiescy[i]->Left = startX + i * 60;
+       lvl1wrogowie_niebiescy[i]->Top = -100;
+       lvl1wrogowie_niebiescy[i]->Visible = true;
+       lvl1wrogowie_niebiescy[i]->Transparent=true;
+   }
 
    //przylatywanie wrogow
    lvl1->Enabled=true;
@@ -183,20 +208,11 @@ void __fastcall TForm1::tytul_wyjazd_czekajTimer(TObject *Sender)
 
 void __fastcall TForm1::lvl1Timer(TObject *Sender)
 {
-   if(lvl1_niebieski1->Top <= 150){
-     lvl1_niebieski1->Top+=10;
-     lvl1_niebieski2->Top+=10;
-     lvl1_niebieski3->Top+=10;
-     lvl1_niebieski4->Top+=10;
-     lvl1_niebieski5->Top+=10;
-     lvl1_niebieski6->Top+=10;
-     lvl1_niebieski7->Top+=10;
-     lvl1_niebieski8->Top+=10;
-     lvl1_niebieski9->Top+=10;
-     lvl1_niebieski10->Top+=10;
-     lvl1_niebieski11->Top+=10;
-     lvl1_niebieski12->Top+=10;
-   } else if(lvl1_niebieski1->Top >= 150) {lvl1->Enabled=false; latanie_wrogow->Enabled=true;}
+   if(lvl1wrogowie_niebiescy[0]->Top <= 150){
+     for(size_t i=0; i<lvl1wrogowie_niebiescy.size(); i++){
+       lvl1wrogowie_niebiescy[i]->Top+=10;
+     }
+   } else if(lvl1wrogowie_niebiescy[0]->Top >= 150) {lvl1->Enabled=false; latanie_wrogow->Enabled=true;}
 }
 //---------------------------------------------------------------------------
 
@@ -204,16 +220,14 @@ void __fastcall TForm1::lvl1Timer(TObject *Sender)
 void __fastcall TForm1::latanie_wrogowTimer(TObject *Sender)
 {
    if(ktory_wrog){
-     lvl1_niebieski1->Top=157; lvl1_niebieski2->Top=157; lvl1_niebieski3->Top=157;
-     lvl1_niebieski4->Top=157; lvl1_niebieski5->Top=157; lvl1_niebieski6->Top=157;
-     lvl1_niebieski7->Top=157; lvl1_niebieski8->Top=157; lvl1_niebieski9->Top=157;
-     lvl1_niebieski10->Top=157; lvl1_niebieski11->Top=157; lvl1_niebieski12->Top=157;
+     for(size_t i=0; i<lvl1wrogowie_niebiescy.size(); i++){
+       lvl1wrogowie_niebiescy[i]->Top=157;
+     }
      ktory_wrog=false;
    } else{
-     lvl1_niebieski1->Top=160; lvl1_niebieski2->Top=160; lvl1_niebieski3->Top=160;
-     lvl1_niebieski4->Top=160; lvl1_niebieski5->Top=160; lvl1_niebieski6->Top=160;
-     lvl1_niebieski7->Top=160; lvl1_niebieski8->Top=160; lvl1_niebieski9->Top=160;
-     lvl1_niebieski10->Top=160; lvl1_niebieski11->Top=160; lvl1_niebieski12->Top=160;
+     for(size_t i=0; i<lvl1wrogowie_niebiescy.size(); i++){
+       lvl1wrogowie_niebiescy[i]->Top=160;
+     }
      ktory_wrog=true;
    }
 }
@@ -221,49 +235,100 @@ void __fastcall TForm1::latanie_wrogowTimer(TObject *Sender)
 
 void __fastcall TForm1::strzal1_lotTimer(TObject *Sender)
 {
-   if(strzal1->Visible || strzal1->Top>=120){
-     strzal1->Top-=10;
-   }else strzal1_lot->Enabled=false;
+   if(strzal1->Visible && strzal1->Top >= tlo->Top-20){
+     strzal1->Top-=20;
+   }
+   for(size_t i=0;i<lvl1wrogowie_niebiescy.size();i++){
+     sprawdza_hit(strzal1,strzal1_lot,lvl1wrogowie_niebiescy[i]);
+   }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::strzal2_lotTimer(TObject *Sender)
 {
-   if(strzal2->Visible || strzal2->Top>=120){
-     strzal2->Top-=10;
-   }else strzal2_lot->Enabled=false;
+   if(strzal2->Visible && strzal2->Top >= tlo->Top-20){
+     strzal2->Top-=20;
+   }
+   for(size_t i=0;i<lvl1wrogowie_niebiescy.size();i++){
+     sprawdza_hit(strzal2,strzal2_lot,lvl1wrogowie_niebiescy[i]);
+   }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::strzal3_lotTimer(TObject *Sender)
 {
-   if(strzal3->Visible || strzal3->Top>=120){
-     strzal3->Top-=10;
-   }else strzal3_lot->Enabled=false;
+   if(strzal3->Visible && strzal3->Top >= tlo->Top-20){
+     strzal3->Top-=20;
+   }
+   for(size_t i=0;i<lvl1wrogowie_niebiescy.size();i++){
+     sprawdza_hit(strzal3,strzal3_lot,lvl1wrogowie_niebiescy[i]);
+   }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::strzal4_lotTimer(TObject *Sender)
 {
-   if(strzal4->Visible || strzal4->Top>=120){
-     strzal4->Top-=10;
-   }else strzal4_lot->Enabled=false;
+   if(strzal4->Visible && strzal4->Top >= tlo->Top-20){
+     strzal4->Top-=20;
+   }
+   for(size_t i=0;i<lvl1wrogowie_niebiescy.size();i++){
+     sprawdza_hit(strzal4,strzal4_lot,lvl1wrogowie_niebiescy[i]);
+   }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::strzal5_lotTimer(TObject *Sender)
 {
-   if(strzal5->Visible || strzal5->Top>=120){
-     strzal5->Top-=10;
-   }else strzal5_lot->Enabled=false;
+   if(strzal5->Visible && strzal5->Top >= tlo->Top-20){
+     strzal5->Top-=20;
+   }
+   for(size_t i=0;i<lvl1wrogowie_niebiescy.size();i++){
+     sprawdza_hit(strzal5,strzal5_lot,lvl1wrogowie_niebiescy[i]);
+   }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::strzal6_lotTimer(TObject *Sender)
 {
-   if(strzal6->Visible || strzal6->Top>=120){
-     strzal6->Top-=10;
-   }else strzal6_lot->Enabled=false;
+   if(strzal6->Visible && strzal6->Top >= tlo->Top-20){
+     strzal6->Top-=20;
+   }
+   for(size_t i=0;i<lvl1wrogowie_niebiescy.size();i++){
+     sprawdza_hit(strzal6,strzal6_lot,lvl1wrogowie_niebiescy[i]);
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::przeladowanieTimer(TObject *Sender)
+{
+   if(ktory_strzal>=6){
+     ktory_strzal==1;
+     przeladowanie->Enabled=false;
+   }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormResize(TObject *Sender)
+{
+   //skalowanie rzeczy w starcie
+   skalowanie_obraz(tlo_tytul); skalowanie_obraz(tlo); skalowanie_obraz(tytul);
+   skalowanie_obraz(start); skalowanie_obraz(high_score);
+   //skalowanie rzeczy w grze
+   skalowanie_obraz(zycie1); skalowanie_obraz(zycie2); skalowanie_obraz(zycie3);
+   skalowanie_obraz(strzal1); skalowanie_obraz(strzal2); skalowanie_obraz(strzal3); skalowanie_obraz(strzal4); skalowanie_obraz(strzal5); skalowanie_obraz(strzal6);
+   skalowanie_obraz(statek);
+   //skalowanie labeli
+   float scaleFactor=(float)ClientWidth/849;
+
+   label_high_score->Font->Size=(int)(initialFontSize_high * scaleFactor);
+
+   label_high_score->Left=(int)(initialLeft_high * scaleFactor);
+   label_high_score->Top=(int)(initialTop_high * scaleFactor);
+
+   score->Font->Size=(int)(initialFontSize_score * scaleFactor);
+
+   score->Left=(int)(initialLeft_score * scaleFactor);
+   score->Top=(int)(initialTop_score * scaleFactor);
 }
 //---------------------------------------------------------------------------
 

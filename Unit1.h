@@ -69,11 +69,13 @@ __published:	// IDE-managed Components
         void __fastcall FormResize(TObject *Sender);
 private:
         //wrogowie niebiescy lvl1
-        std::vector<TImage*> lvl1wrogowie_niebiescy;
+        std::vector<TImage*> wrogowie_niebiescy;
         //pozycje do resizowania labeli
         int initialFontSize_high, initialFontSize_score;
         int initialLeft_high, initialLeft_score;
         int initialTop_high, initialTop_score;
+        std::vector<int> initialLeft;
+        std::vector<int> initialTop;
         //pomocnicze
         int ktory_statek, ktory_strzal;
         bool gra_rozpoczeta, ktory_wrog;	// User declarations

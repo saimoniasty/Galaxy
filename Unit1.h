@@ -68,8 +68,11 @@ __published:	// IDE-managed Components
         void __fastcall przeladowanieTimer(TObject *Sender);
         void __fastcall FormResize(TObject *Sender);
 private:
-        //wrogowie niebiescy lvl1
+        //wrogowie
         std::vector<TImage*> wrogowie_niebiescy;
+        std::vector<TImage*> wrogowie_zieloni;
+        std::vector<TImage*> wrogowie_rozowi;
+        std::vector<TImage*> wrogowie_czerwoni;
         //pozycje do resizowania labeli
         int initialFontSize_high, initialFontSize_score;
         int initialLeft_high, initialLeft_score;
@@ -77,8 +80,11 @@ private:
         std::vector<int> initialLeft;
         std::vector<int> initialTop;
         //pomocnicze
-        int ktory_statek, ktory_strzal;
-        bool gra_rozpoczeta, ktory_wrog;	// User declarations
+        int ktory_statek; //animacja statku
+        int ktory_strzal; //odlicza ktory jest strzal
+        bool gra_rozpoczeta;  //czy gra sie zaczela
+        bool animacja_wrog; //animacja wrogow
+        int wynik; //wynik w grze	// User declarations
 public:		// User declarations
         __fastcall TForm1(TComponent* Owner);
         __fastcall ~TForm1();

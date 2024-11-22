@@ -42,18 +42,22 @@ void skalowanie_obraz(TImage *obraz){
 __fastcall TForm1::TForm1(TComponent* Owner)
         : TForm(Owner)
 {
-   tytul->Top=900; tytul->Left=152;
-   ktory_statek=1; ktory_wrog=true; gra_rozpoczeta=false;
-   tytul_wjazd->Enabled = true;
-
+   //ustawianie pomocniczych
+   tytul->Top=900; tytul->Left=152; //do wjazdu tytulu
+   ktory_statek=1; //do animacji statku
+   animacja_wrog=true; gra_rozpoczeta=false;
+   tytul_wjazd->Enabled = true; //wlaczenie wjazdu tytulu
+   wynik=0; //wynik zdobyty w grze
+   //do resizowania tekstow jak sie powiekszy okno
+   //dla highscore
    initialFontSize_high = label_high_score->Font->Size;
    initialLeft_high = label_high_score->Left;
    initialTop_high = label_high_score->Top;
-
+   //dla score
    initialFontSize_score = score->Font->Size;
    initialLeft_score = score->Left;
    initialTop_score = score->Top;
-
+   //robienie pierwszych wrogow na 1 lvl
    for(int i = 0; i<12; i++) {
         TImage *wrog = new TImage(this);
         wrog->Parent = this;
@@ -64,7 +68,7 @@ __fastcall TForm1::TForm1(TComponent* Owner)
 //---------------------------------------------------------------------------
 __fastcall TForm1::~TForm1()
 {
-
+   //zapisywanie highscore
 }
 //---------------------------------------------------------------------------
 
@@ -74,9 +78,9 @@ void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
    if(gra_rozpoczeta){
-     if(Key=='D' || Key=='d' || Key==VK_RIGHT) Prawo->Enabled=true;
-     if(Key=='A' || Key=='a' || Key==VK_LEFT) Lewo->Enabled=true;
-     if(Key==VK_SPACE){
+     if(Key=='D' || Key=='d' || Key==VK_RIGHT) Prawo->Enabled=true; //ruch statku w prawo
+     if(Key=='A' || Key=='a' || Key==VK_LEFT) Lewo->Enabled=true; //ruch statku w prawo
+     if(Key==VK_SPACE){  //strzelanie (moglem lepiej zrobic nie chce mi sie poprawiac)
        if(ktory_strzal==1){
          sndPlaySound("snd/strzal.wav",SND_ASYNC);
          ktory_strzal++;
@@ -129,7 +133,7 @@ void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
    if(gra_rozpoczeta){
-     if(Key=='D' || Key=='d' || Key==VK_RIGHT) Prawo->Enabled=false;
+     if(Key=='D' || Key=='d' || Key==VK_RIGHT) Prawo->Enabled=false; //koniec ruchu statku
      if(Key=='A' || Key=='a' || Key==VK_LEFT) Lewo->Enabled=false;
    }
 }
@@ -137,19 +141,20 @@ void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
 
 void __fastcall TForm1::LewoTimer(TObject *Sender)
 {
-   if(statek->Left > -10) statek->Left-=10;
+   if(statek->Left > -10) statek->Left-=10; //statek leci w lewo
 }
 //---------------------------------------------------------------------------
 
 
 void __fastcall TForm1::PrawoTimer(TObject *Sender)
 {
-   if(statek->Left+statek->Width < Form1->Width-10) statek->Left+=10;
+   if(statek->Left+statek->Width < Form1->Width-10) statek->Left+=10; //statek leci w prawo
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TForm1::statek_animacjaTimer(TObject *Sender)
 {
+   //animacja statku
    switch(ktory_statek){
     case 1:
     statek->Picture->LoadFromFile("img/statek1.bmp"); ktory_statek=2;
@@ -168,16 +173,18 @@ void __fastcall TForm1::statek_animacjaTimer(TObject *Sender)
 
 void __fastcall TForm1::startClick(TObject *Sender)
 {
+   //ustawianie pomocniczych przy rozpoczeciu gry
    gra_rozpoczeta=true;
+   //wylaczenie tytulowych obiektow
    tytul->Visible=false;
    start->Visible=false; high_score->Visible=false; label_high_score->Visible=false;
    tlo_tytul->Visible=false;
-
+   //wlaczenie obiektow do gry
    tlo->Visible=true;
    score->Visible=true;
    statek->Visible=true;
    statek_animacja->Enabled=true;
-   ktory_strzal=1;
+   TForm1::ktory_strzal=1;
    zycie1->Visible=true; zycie2->Visible=true; zycie3->Visible=true;
 
    //pojawianie sie niebieskich wrogow w lvl1
@@ -199,6 +206,7 @@ void __fastcall TForm1::startClick(TObject *Sender)
 
 void __fastcall TForm1::tytul_wjazdTimer(TObject *Sender)
 {
+   //wejscie tytulu
    if(tytul->Top >= 78) tytul->Top-=15;
    else if(tytul->Top <= 78) {
      high_score->Visible=true; label_high_score->Visible=true;
@@ -210,6 +218,7 @@ void __fastcall TForm1::tytul_wjazdTimer(TObject *Sender)
 
 void __fastcall TForm1::tytul_wyjazd_czekajTimer(TObject *Sender)
 {
+   //dokonczenie wlaczenia tytulowej strony
    start->Visible=true;
    tytul_wyjazd_czekaj->Enabled=false;
 }
@@ -217,6 +226,7 @@ void __fastcall TForm1::tytul_wyjazd_czekajTimer(TObject *Sender)
 
 void __fastcall TForm1::lvl1Timer(TObject *Sender)
 {
+   //przylatywanie wrogow
    if(wrogowie_niebiescy[0]->Top <= 150){
      for(size_t i=0; i<wrogowie_niebiescy.size(); i++){
        wrogowie_niebiescy[i]->Top+=10;
@@ -228,19 +238,22 @@ void __fastcall TForm1::lvl1Timer(TObject *Sender)
 
 void __fastcall TForm1::latanie_wrogowTimer(TObject *Sender)
 {
-   if(ktory_wrog){
+   //animacja wrogow
+   if(animacja_wrog){
      for(size_t i=0; i<wrogowie_niebiescy.size(); i++){
        wrogowie_niebiescy[i]->Top=157;
      }
-     ktory_wrog=false;
+     animacja_wrog=false;
    } else{
      for(size_t i=0; i<wrogowie_niebiescy.size(); i++){
        wrogowie_niebiescy[i]->Top=160;
      }
-     ktory_wrog=true;
+     animacja_wrog=true;
    }
 }
 //---------------------------------------------------------------------------
+
+//wszystkie timery do strzalow
 
 void __fastcall TForm1::strzal1_lotTimer(TObject *Sender)
 {
@@ -308,12 +321,13 @@ void __fastcall TForm1::strzal6_lotTimer(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+//koniec timerow
+
 void __fastcall TForm1::przeladowanieTimer(TObject *Sender)
 {
-   if(ktory_strzal>=6){
-     ktory_strzal==1;
-     przeladowanie->Enabled=false;
-   }
+   //przeladowanie po szesciu strzalach
+   TForm1::ktory_strzal=1;
+   przeladowanie->Enabled=false;
 }
 //---------------------------------------------------------------------------
 
